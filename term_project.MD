@@ -1,4 +1,5 @@
-기말프로젝트 계획서
+#기말프로젝트계획서
+
 import requests
 resp = requests.get("https://finance.naver.com/marketindex/")
 resp.raise_for_status()
