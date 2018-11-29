@@ -1,7 +1,7 @@
 import datetime
 now = datetime.datetime.now()
 nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
-print(nowDatetime)
+
 import urllib.request
 from bs4 import BeautifulSoup
 rawdata = urllib.request.urlopen('https://finance.naver.com/marketindex/exchangeList.nhn')
@@ -26,5 +26,7 @@ def execute_func(second=60):
     if end:
         return
     print(money_data)
+    print(nowDatetime)
+    print()
     threading.Timer(second, execute_func, [second]).start()
 execute_func(60)
