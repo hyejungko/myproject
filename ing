@@ -17,7 +17,7 @@ for data in soup:
 	    money_value = None
 import threading
 end = False
-def execute_func(second=20):
+def execute_func(second=60):
     global end
     if end:
         return
@@ -28,4 +28,4 @@ def execute_func(second=20):
     print(money_data)
     print()
     threading.Timer(second, execute_func, [second]).start()
-execute_func(20)
+execute_func(60)
