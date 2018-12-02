@@ -1,0 +1,41 @@
+# import urllib.request와 beautifulsoup를 이용하여 네이버 금융 사이트에서 통화-환율 데이터를 가져옵니다.
+import urllib.request
+from bs4 import BeautifulSoup
+rawdata = urllib.request.urlopen('https://finance.naver.com/marketindex/exchangeList.nhn')
+source = rawdata.read()
+
+# 통화-환율 형식의 list를 설정합니다.
+class_list = ['tit','sale']
+soup = BeautifulSoup(source,'html.parser')
+soup = soup.find_all('td', class_ = class_list)
+money_data = {}
+for data in soup:
+    if soup.index(data)%2 == 0:
+	    data = data.get_text().replace('\n','').replace('\t','')
+	    money_key = data
+    elif soup.index(data)%2 == 1:
+	    money_value = data.get_text()
+	    money_data[money_key] = money_value
+	    money_key = None
+	    money_value = None
+
+# 1분마다 통화-환율 데이터를 자동 실행하는 import threading을 이용합니다.
+import threading
+end = False
+def execute_func(second=60):
+    global end
+    if end:
+        return
+
+# import datetime을 이용하여 실시간을 출력합니다.
+    import datetime
+    now = datetime.datetime.now()
+    nowDatetime = now.strftime('%Y-%m-%d %H:%M:%S')
+    print(nowDatetime)
+
+# 앞서 뽑아낸 통화-환율 데이터를 시간과 함께 출력합니다.
+    print(money_data)
+    print()
+    threading.Timer(second, execute_func, [second]).start()
+execute_func(60)
+
